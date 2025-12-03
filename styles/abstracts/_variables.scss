@@ -1,0 +1,215 @@
+// ============================================
+// Theme Color Definitions
+// ============================================
+
+// Dark Theme (default)
+$dark-theme: (
+  // Background colors
+  bg-primary: #0a0a0a,
+  bg-secondary: #1a1a1a,
+  bg-tertiary: #2a2a2a,
+  
+  // Text colors
+  text-primary: #e8e8e8,
+  text-secondary: #a8a8a8,
+  text-tertiary: #707070,
+  
+  // Accent colors
+  accent-primary: #00d4ff,
+  accent-secondary: #7c3aed,
+  
+  // Border colors
+  border-subtle: #333333,
+  border-medium: #4a4a4a,
+  border-strong: #606060,
+  
+  // Canvas/waveform colors
+  canvas-bg: #0f0f0f,
+  waveform-line: #00d4ff,
+  waveform-fill: rgba(0, 212, 255, 0.1),
+  grid-line: #1f1f1f,
+  control-point: #00d4ff,
+  control-point-hover: #33e0ff
+);
+
+// Light Theme
+$light-theme: (
+  bg-primary: #ffffff,
+  bg-secondary: #f5f5f5,
+  bg-tertiary: #e8e8e8,
+  
+  text-primary: #1a1a1a,
+  text-secondary: #4a4a4a,
+  text-tertiary: #707070,
+  
+  accent-primary: #0066cc,
+  accent-secondary: #7c3aed,
+  
+  border-subtle: #d0d0d0,
+  border-medium: #b0b0b0,
+  border-strong: #909090,
+  
+  canvas-bg: #fafafa,
+  waveform-line: #0066cc,
+  waveform-fill: rgba(0, 102, 204, 0.08),
+  grid-line: #e5e5e5,
+  control-point: #0066cc,
+  control-point-hover: #0052a3
+);
+
+// High Contrast Theme
+$high-contrast-theme: (
+  bg-primary: #000000,
+  bg-secondary: #000000,
+  bg-tertiary: #1a1a1a,
+  
+  text-primary: #ffffff,
+  text-secondary: #ffffff,
+  text-tertiary: #cccccc,
+  
+  accent-primary: #ffff00,
+  accent-secondary: #00ffff,
+  
+  border-subtle: #ffffff,
+  border-medium: #ffffff,
+  border-strong: #ffffff,
+  
+  canvas-bg: #000000,
+  waveform-line: #ffff00,
+  waveform-fill: rgba(255, 255, 0, 0.15),
+  grid-line: #333333,
+  control-point: #ffff00,
+  control-point-hover: #ffffff
+);
+
+// Protanopia (red-weak) Theme
+$protanopia-theme: (
+  bg-primary: #0a0a0a,
+  bg-secondary: #1a1a1a,
+  bg-tertiary: #2a2a2a,
+  
+  text-primary: #e8e8e8,
+  text-secondary: #a8a8a8,
+  text-tertiary: #707070,
+  
+  accent-primary: #00a8e8,
+  accent-secondary: #ffa500,
+  
+  border-subtle: #333333,
+  border-medium: #4a4a4a,
+  border-strong: #606060,
+  
+  canvas-bg: #0f0f0f,
+  waveform-line: #00a8e8,
+  waveform-fill: rgba(0, 168, 232, 0.1),
+  grid-line: #1f1f1f,
+  control-point: #00a8e8,
+  control-point-hover: #33c0ff
+);
+
+// Deuteranopia (green-weak) Theme
+$deuteranopia-theme: (
+  bg-primary: #0a0a0a,
+  bg-secondary: #1a1a1a,
+  bg-tertiary: #2a2a2a,
+  
+  text-primary: #e8e8e8,
+  text-secondary: #a8a8a8,
+  text-tertiary: #707070,
+  
+  accent-primary: #0099ff,
+  accent-secondary: #ffaa00,
+  
+  border-subtle: #333333,
+  border-medium: #4a4a4a,
+  border-strong: #606060,
+  
+  canvas-bg: #0f0f0f,
+  waveform-line: #0099ff,
+  waveform-fill: rgba(0, 153, 255, 0.1),
+  grid-line: #1f1f1f,
+  control-point: #0099ff,
+  control-point-hover: #33aaff
+);
+
+// Tritanopia (blue-weak) Theme
+$tritanopia-theme: (
+  bg-primary: #0a0a0a,
+  bg-secondary: #1a1a1a,
+  bg-tertiary: #2a2a2a,
+  
+  text-primary: #e8e8e8,
+  text-secondary: #a8a8a8,
+  text-tertiary: #707070,
+  
+  accent-primary: #ff3366,
+  accent-secondary: #00cc88,
+  
+  border-subtle: #333333,
+  border-medium: #4a4a4a,
+  border-strong: #606060,
+  
+  canvas-bg: #0f0f0f,
+  waveform-line: #ff3366,
+  waveform-fill: rgba(255, 51, 102, 0.1),
+  grid-line: #1f1f1f,
+  control-point: #ff3366,
+  control-point-hover: #ff5577
+);
+
+// ============================================
+// Responsive Breakpoints
+// ============================================
+$breakpoints: (
+  mobile-s: 320px,
+  mobile-m: 375px,
+  mobile-l: 425px,
+  tablet: 768px,
+  laptop: 1024px,
+  laptop-l: 1440px,
+  desktop: 2560px
+);
+
+// ============================================
+// Spacing Scale
+// ============================================
+$spacing: (
+  xs: 0.25rem,    // 4px
+  sm: 0.5rem,     // 8px
+  md: 1rem,       // 16px
+  lg: 1.5rem,     // 24px
+  xl: 2rem,       // 32px
+  xxl: 3rem,      // 48px
+  xxxl: 4rem      // 64px
+);
+
+// ============================================
+// Typography Scale
+// ============================================
+$font-sizes: (
+  xs: 0.75rem,    // 12px
+  sm: 0.875rem,   // 14px
+  base: 1rem,     // 16px
+  lg: 1.125rem,   // 18px
+  xl: 1.25rem,    // 20px
+  xxl: 1.5rem,    // 24px
+  xxxl: 2rem      // 32px
+);
+
+// ============================================
+// Shadows
+// ============================================
+$shadows: (
+  subtle: 0 1px 2px rgba(0, 0, 0, 0.1),
+  medium: 0 2px 8px rgba(0, 0, 0, 0.15),
+  strong: 0 4px 16px rgba(0, 0, 0, 0.2)
+);
+
+// ============================================
+// Transitions
+// ============================================
+$transitions: (
+  fast: 150ms ease,
+  medium: 250ms ease,
+  slow: 350ms ease
+);

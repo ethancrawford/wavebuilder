@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visual wavetable editor for SuperCollider with dual time/frequency domain editing">
+  <title>Wavetable Editor</title>
+  <link rel="stylesheet" href="/styles/main.scss">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header with controls -->
+    <header class="app-header">
+      <h1 class="app-title">Wavetable Editor</h1>
+      
+      <div class="header-controls">
+        <!-- Theme switcher -->
+        <div class="control-group">
+          <label for="theme-select" class="control-label">Theme</label>
+          <select id="theme-select" class="theme-select">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="high-contrast">High Contrast</option>
+            <option value="protanopia">Protanopia</option>
+            <option value="deuteranopia">Deuteranopia</option>
+            <option value="tritanopia">Tritanopia</option>
+          </select>
+        </div>
+
+        <!-- View mode toggle -->
+        <div class="control-group">
+          <label for="view-mode" class="control-label">View</label>
+          <select id="view-mode" class="view-select">
+            <option value="time">Time Domain</option>
+            <option value="frequency">Frequency Domain</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main canvas area -->
+    <main class="app-main">
+      <div class="canvas-container">
+        <canvas id="time-canvas" class="waveform-canvas" width="1024" height="400"></canvas>
+        <canvas id="frequency-canvas" class="waveform-canvas hidden" width="1024" height="400"></canvas>
+      </div>
+
+      <!-- Info display -->
+      <div class="info-panel">
+        <div class="info-item">
+          <span class="info-label">Samples:</span>
+          <span id="sample-count" class="info-value">1024</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Frequency:</span>
+          <span id="frequency-display" class="info-value">440 Hz</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Control panel -->
+    <aside class="control-panel">
+      <!-- Presets -->
+      <section class="control-section">
+        <h2 class="section-title">Presets</h2>
+        <div class="button-group">
+          <button class="preset-button" data-preset="sine">Sine</button>
+          <button class="preset-button" data-preset="saw">Saw</button>
+          <button class="preset-button" data-preset="square">Square</button>
+          <button class="preset-button" data-preset="triangle">Triangle</button>
+        </div>
+      </section>
+
+      <!-- Audio preview -->
+      <section class="control-section">
+        <h2 class="section-title">Preview</h2>
+        <div class="frequency-control">
+          <label for="frequency-slider" class="control-label">Frequency</label>
+          <div class="frequency-input-group">
+            <input 
+              type="range" 
+              id="frequency-slider" 
+              class="frequency-slider"
+              min="110"
+              max="880"
+              value="440"
+              step="1">
+            <span id="frequency-value" class="frequency-value">440 Hz</span>
+          </div>
+        </div>
+        <div class="frequency-control">
+          <label for="volume-slider" class="control-label">Volume</label>
+          <div class="frequency-input-group">
+            <input 
+              type="range" 
+              id="volume-slider" 
+              class="frequency-slider"
+              min="0"
+              max="100"
+              value="50"
+              step="1">
+            <span id="volume-value" class="frequency-value">50%</span>
+          </div>
+        </div>
+        <div class="audio-controls">
+          <button id="play-button" class="action-button">Play</button>
+          <button id="stop-button" class="action-button" disabled>Stop</button>
+        </div>
+      </section>
+
+      <!-- Export -->
+      <section class="control-section">
+        <h2 class="section-title">Export</h2>
+        <div class="button-group">
+          <button id="export-sc" class="action-button">SuperCollider</button>
+          <button id="export-wav" class="action-button">WAV File</button>
+          <button id="export-json" class="action-button">JSON</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

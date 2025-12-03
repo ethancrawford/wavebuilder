@@ -1,0 +1,97 @@
+@use "sass:map";
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================
+// Theme Switcher and Select Inputs
+// ============================================
+
+.theme-select,
+.view-select {
+  appearance: none;
+  padding: map.get($spacing, sm) map.get($spacing, md);
+  padding-right: map.get($spacing, xl);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23a8a8a8' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right map.get($spacing, sm) center;
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  @include transition(background-color, border-color, box-shadow);
+  
+  &:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-strong);
+  }
+  
+  &:focus {
+    @include focus-outline;
+  }
+  
+  // Theme-specific dropdown arrow colors
+  [data-theme="light"] & {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%234a4a4a' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  }
+  
+  [data-theme="high-contrast"] & {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  }
+}
+
+// ============================================
+// Button Styles (Preset and Action Buttons)
+// ============================================
+
+.preset-button,
+.action-button {
+  padding: map.get($spacing, sm) map.get($spacing, md);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  @include transition(background-color, border-color, transform, box-shadow);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  
+  &:focus {
+    @include focus-outline;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.action-button {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  border-color: var(--border-strong);
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: var(--bg-primary);
+    border-color: transparent;
+    box-shadow: map.get($shadows, medium);
+  }
+}
+
+// ============================================
+// Utility Classes
+// ============================================
+
+.hidden {
+  display: none !important;
+}

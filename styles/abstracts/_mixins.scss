@@ -1,0 +1,77 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+// ============================================
+// Responsive Breakpoint Mixin
+// ============================================
+@mixin respond-to($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' not found in $breakpoints map.";
+  }
+}
+
+// ============================================
+// Theme Color Application Mixin
+// ============================================
+@mixin apply-theme($theme-map) {
+  @each $property, $value in $theme-map {
+    --#{$property}: #{$value};
+  }
+}
+
+// ============================================
+// Generate All Theme Classes
+// ============================================
+@mixin generate-themes() {
+  [data-theme="dark"] {
+    @include apply-theme($dark-theme);
+  }
+  
+  [data-theme="light"] {
+    @include apply-theme($light-theme);
+  }
+  
+  [data-theme="high-contrast"] {
+    @include apply-theme($high-contrast-theme);
+  }
+  
+  [data-theme="protanopia"] {
+    @include apply-theme($protanopia-theme);
+  }
+  
+  [data-theme="deuteranopia"] {
+    @include apply-theme($deuteranopia-theme);
+  }
+  
+  [data-theme="tritanopia"] {
+    @include apply-theme($tritanopia-theme);
+  }
+}
+
+// ============================================
+// Utility Mixins
+// ============================================
+
+// Flexbox center alignment
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Smooth focus outline
+@mixin focus-outline {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+// Smooth transitions
+@mixin transition($properties...) {
+  transition-property: $properties;
+  transition-duration: map.get($transitions, medium);
+  transition-timing-function: ease;
+}

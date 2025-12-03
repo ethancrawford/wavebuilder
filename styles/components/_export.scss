@@ -1,0 +1,160 @@
+@use "sass:map";
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================
+// Export Modal Styles
+// ============================================
+
+.export-modal {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  @include flex-center;
+  padding: map.get($spacing, lg);
+  @include transition(opacity, visibility);
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.export-modal-content {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  box-shadow: map.get($shadows, strong);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  
+  @include respond-to(tablet) {
+    max-width: 700px;
+  }
+}
+
+.export-modal-header {
+  padding: map.get($spacing, lg);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.export-modal-title {
+  font-size: map.get($font-sizes, xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.export-modal-close {
+  width: 32px;
+  height: 32px;
+  @include flex-center;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: map.get($font-sizes, lg);
+  @include transition(background-color, color);
+  
+  &:hover {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+  }
+}
+
+.export-modal-body {
+  padding: map.get($spacing, lg);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.export-code-container {
+  position: relative;
+}
+
+.export-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: map.get($font-sizes, xs);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--canvas-bg);
+  border: 1px solid var(--border-medium);
+  padding: map.get($spacing, md);
+  white-space: pre;
+  overflow-x: auto;
+  max-height: 400px;
+  
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    
+    &:hover {
+      background: var(--border-strong);
+    }
+  }
+}
+
+.export-modal-footer {
+  padding: map.get($spacing, lg);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: map.get($spacing, sm);
+  justify-content: flex-end;
+}
+
+.copy-button {
+  padding: map.get($spacing, sm) map.get($spacing, lg);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 600;
+  
+  &.copied {
+    background: var(--accent-primary) !important;
+    color: var(--bg-primary) !important;
+    border-color: transparent !important;
+  }
+}
+
+// ============================================
+// Export Notification
+// ============================================
+
+.export-notification {
+  position: fixed;
+  bottom: map.get($spacing, xl);
+  right: map.get($spacing, xl);
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  padding: map.get($spacing, md) map.get($spacing, lg);
+  border: 1px solid transparent;
+  box-shadow: map.get($shadows, strong);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 600;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  @include transition(opacity, transform);
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

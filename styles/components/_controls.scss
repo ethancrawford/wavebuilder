@@ -1,0 +1,263 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================
+// Control Panel Components
+// ============================================
+
+.control-panel {
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing, lg);
+  padding: map.get($spacing, lg);
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-subtle);
+  
+  @include respond-to(tablet) {
+    border-top: none;
+    border-left: 1px solid var(--border-subtle);
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+    
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--border-medium);
+      border-radius: 0;
+      
+      &:hover {
+        background: var(--border-strong);
+      }
+    }
+  }
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing, md);
+}
+
+.section-title {
+  font-size: map.get($font-sizes, lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: map.get($spacing, sm);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+// ============================================
+// Button Groups
+// ============================================
+
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: map.get($spacing, sm);
+  
+  @include respond-to(mobile-l) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  @include respond-to(tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.audio-controls {
+  display: flex;
+  gap: map.get($spacing, sm);
+  
+  .action-button {
+    flex: 1;
+  }
+}
+
+// ============================================
+// Preset Buttons
+// ============================================
+
+.preset-button {
+  padding: map.get($spacing, sm) map.get($spacing, md);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  @include transition(background-color, border-color, transform, box-shadow);
+  
+  // Subtle gradient overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, var(--bg-secondary) 100%);
+    opacity: 0;
+    @include transition(opacity);
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  
+  &:focus {
+    @include focus-outline;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================
+// Action Buttons (Play, Stop, Export)
+// ============================================
+
+.action-button {
+  padding: map.get($spacing, sm) map.get($spacing, md);
+  font-size: map.get($font-sizes, sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  @include transition(background-color, border-color, transform, box-shadow, color);
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: var(--bg-primary);
+    border-color: transparent;
+    box-shadow: map.get($shadows, medium);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: map.get($shadows, subtle);
+  }
+  
+  &:focus {
+    @include focus-outline;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Play button special styling
+#play-button {
+  &:not(:disabled) {
+    border-color: var(--accent-primary);
+  }
+}
+
+// Stop button special styling
+#stop-button {
+  &:not(:disabled) {
+    border-color: var(--accent-secondary);
+  }
+}
+
+// ============================================
+// Frequency Control (Range Input)
+// ============================================
+
+.frequency-control {
+  display: flex;
+  flex-direction: column;
+  gap: map.get($spacing, sm);
+}
+
+.frequency-input-group {
+  display: flex;
+  align-items: center;
+  gap: map.get($spacing, md);
+}
+
+.frequency-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  outline: none;
+  
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent-primary);
+    cursor: pointer;
+    border: 2px solid var(--bg-secondary);
+    @include transition(background-color, transform);
+    
+    &:hover {
+      background: var(--accent-secondary);
+      transform: scale(1.1);
+    }
+  }
+  
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--accent-primary);
+    cursor: pointer;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 0;
+    @include transition(background-color, transform);
+    
+    &:hover {
+      background: var(--accent-secondary);
+      transform: scale(1.1);
+    }
+  }
+  
+  &:focus {
+    &::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px var(--accent-primary);
+    }
+    
+    &::-moz-range-thumb {
+      box-shadow: 0 0 0 3px var(--accent-primary);
+    }
+  }
+}
+
+.frequency-value {
+  min-width: 60px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: map.get($font-sizes, sm);
+  font-weight: 500;
+  color: var(--accent-primary);
+  text-align: right;
+}

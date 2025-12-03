@@ -1,0 +1,33 @@
+// ============================================
+// Main Stylesheet - Import Order Matters
+// ============================================
+
+// 1. Abstracts (variables, mixins, functions)
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+// 2. Base styles (reset, typography)
+@use 'base/reset';
+@use 'base/typography';
+
+@use 'layout/container';
+
+@use 'components/theme-switcher';
+@use 'components/export';
+// 3. Generate theme CSS custom properties
+@include mixins.generate-themes();
+
+
+// ============================================
+// Temporary development styles
+// (Will be replaced by layout and component styles in next groups)
+// ============================================
+// .app-container {
+//     padding: 1rem;
+//     max-width: 100%;
+// }
+
+// Basic visibility for now - proper layout coming in Group 3
+// .hidden {
+//     display: none;
+// }

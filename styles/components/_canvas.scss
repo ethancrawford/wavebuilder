@@ -1,0 +1,65 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ============================================
+// Canvas Styles
+// ============================================
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 300px;
+  background-color: var(--canvas-bg);
+  border: 1px solid var(--border-medium);
+  box-shadow: map.get($shadows, medium);
+  
+  @include respond-to(tablet) {
+    min-height: 400px;
+  }
+  
+  @include respond-to(laptop) {
+    min-height: 500px;
+  }
+}
+
+.waveform-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none; // Prevent default touch behaviors
+  @include transition(opacity);
+  
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  // Active state when dragging
+  &.dragging {
+    cursor: grabbing;
+  }
+}
+
+// Canvas loading state
+.canvas-loading {
+  @include flex-center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--canvas-bg);
+  color: var(--text-secondary);
+  font-size: map.get($font-sizes, sm);
+  pointer-events: none;
+  opacity: 0;
+  @include transition(opacity);
+  
+  &.visible {
+    opacity: 1;
+  }
+}
