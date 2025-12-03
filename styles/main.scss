@@ -14,6 +14,7 @@
 
 @use 'components/theme-switcher';
 @use 'components/export';
+@use 'components/controls';
 // 3. Generate theme CSS custom properties
 @include mixins.generate-themes();
 

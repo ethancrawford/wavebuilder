@@ -9,6 +9,7 @@ import { AudioPreview } from './views/AudioPreview.js';
 import { ExportModal } from './utils/ExportModal.js';
 import { ExportNotification } from './utils/ExportNotification.js';
 import { StorageManager } from './utils/StorageManager.js';
+import { HistoryManager } from './utils/HistoryManager.js';
 
 /**
  * WavetableEditor
@@ -29,6 +30,8 @@ export class WavetableEditor {
     this.exportModal = null;
     this.exportNotification = null;
     this.storageManager = null;
+    this.historyManager = null;
+    this.isRestoringHistory = false; // Flag to prevent history recording during undo/redo
 
     // UI element references
     this.elements = {
@@ -46,7 +49,9 @@ export class WavetableEditor {
       frequencySlider: document.getElementById('frequency-slider'),
       frequencyValue: document.getElementById('frequency-value'),
       volumeSlider: document.getElementById('volume-slider'),
-      volumeValue: document.getElementById('volume-value')
+      volumeValue: document.getElementById('volume-value'),
+      undoButton: document.getElementById('undo-button'),
+      redoButton: document.getElementById('redo-button')
     };
 
     this.initialize();
@@ -54,6 +59,7 @@ export class WavetableEditor {
 
   initialize() {
     this.storageManager = new StorageManager();
+    this.historyManager = new HistoryManager(50);
     const savedWaveformData = this.storageManager.loadWaveform();
     const savedFrequency = this.storageManager.loadFrequency();
     const savedVolume = this.storageManager.loadVolume();
@@ -98,6 +104,7 @@ export class WavetableEditor {
     this.elements.volumeValue.textContent = `${Math.round(savedVolume * 1000)}%`;
     this.elements.viewSelect.value = savedView;
 
+    this.pushToHistory();
     // Bind events
     this.bindEvents();
 
@@ -175,8 +182,123 @@ export class WavetableEditor {
     this.elements.exportJSON.addEventListener('click', () => {
       this.exportWaveform('json');
     });
+
+    // History buttons
+    this.elements.undoButton.addEventListener('click', () => {
+      this.undo();
+    });
+
+    this.elements.redoButton.addEventListener('click', () => {
+      this.redo();
+    });
+
+    // Keyboard shortcuts for undo/redo
+    document.addEventListener('keydown', (e) => {
+      // Ctrl+Z or Cmd+Z for undo
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        this.undo();
+      }
+      // Ctrl+Y or Ctrl+Shift+Z or Cmd+Shift+Z for redo
+      if (((e.ctrlKey || e.metaKey) && e.key === 'y') ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z')) {
+        e.preventDefault();
+        this.redo();
+      }
+    });
+
+    // Listen for history changes to update button states
+    window.addEventListener('historychange', (e) => {
+      this.updateHistoryButtons(e.detail);
+    });
   }
 
+  pushToHistory() {
+    if (this.isRestoringHistory) {
+      return; // Don't record history when restoring from undo/redo
+    }
+
+    const state = {
+      waveform: {
+        sampleRate: this.currentWaveform.sampleRate,
+        samples: this.currentWaveform.samples
+      },
+      spectrum: {
+        harmonicCount: this.currentSpectrum.harmonicCount,
+        harmonics: this.currentSpectrum.harmonics
+      }
+    };
+
+    this.historyManager.push(state);
+  }
+
+  // Add undo method
+  undo() {
+    const previousState = this.historyManager.undo();
+
+    if (previousState) {
+      this.restoreState(previousState);
+      console.log('Undo');
+    }
+  }
+
+  // Add redo method
+  redo() {
+    const nextState = this.historyManager.redo();
+
+    if (nextState) {
+      this.restoreState(nextState);
+      console.log('Redo');
+    }
+  }
+
+  // Add restore state method
+  restoreState(state) {
+    this.isRestoringHistory = true;
+
+    // Restore waveform
+    this.currentWaveform = new Waveform(state.waveform.sampleRate);
+    this.currentWaveform.samples.set(state.waveform.samples);
+
+    // Restore spectrum
+    this.currentSpectrum = new FrequencySpectrum(state.spectrum.harmonicCount);
+    this.currentSpectrum.harmonics = state.spectrum.harmonics.map(h => ({ ...h }));
+
+    // Update active view
+    if (this.activeView === 'time') {
+      this.timeCanvas.updateFromWaveform(this.currentWaveform);
+    } else {
+      this.frequencyCanvas.updateFromSpectrum(this.currentSpectrum);
+    }
+
+    // Update audio if playing
+    if (this.audioPreview && this.audioPreview.getIsPlaying()) {
+      this.audioPreview.updateWaveform(this.currentWaveform);
+    }
+
+    // Save to localStorage
+    this.storageManager.saveWaveform(this.currentWaveform);
+    this.storageManager.saveSpectrum(this.currentSpectrum);
+
+    // Update info display
+    this.updateInfoDisplay();
+
+    this.isRestoringHistory = false;
+  }
+
+  // Add method to update history button states
+  updateHistoryButtons(historyState) {
+    this.elements.undoButton.disabled = !historyState.canUndo;
+    this.elements.redoButton.disabled = !historyState.canRedo;
+
+    // Update tooltips with history info
+    this.elements.undoButton.title = historyState.canUndo
+      ? `Undo (Ctrl+Z) - ${historyState.currentIndex}/${historyState.historySize}`
+      : 'Undo (Ctrl+Z)';
+    this.elements.redoButton.title = historyState.canRedo
+      ? `Redo (Ctrl+Y) - ${historyState.currentIndex + 2}/${historyState.historySize}`
+      : 'Redo (Ctrl+Y)';
+  }
 
   switchView(viewType) {
     this.activeView = viewType;
@@ -218,6 +340,7 @@ export class WavetableEditor {
     if (this.audioPreview && this.audioPreview.getIsPlaying()) {
       this.audioPreview.updateWaveform(this.currentWaveform);
     }
+    this.pushToHistory();
 
     this.storageManager.saveWaveform(this.currentWaveform);
     this.storageManager.saveSpectrum(this.currentSpectrum);
@@ -245,6 +368,7 @@ export class WavetableEditor {
     if (this.audioPreview && this.audioPreview.getIsPlaying()) {
       this.audioPreview.updateWaveform(this.currentWaveform);
     }
+    this.pushToHistory();
 
     this.storageManager.saveWaveform(this.currentWaveform);
     this.storageManager.saveSpectrum(this.currentSpectrum);
@@ -289,6 +413,7 @@ export class WavetableEditor {
     } else {
       this.frequencyCanvas.updateFromSpectrum(this.currentSpectrum);
     }
+    this.pushToHistory();
 
     this.storageManager.saveWaveform(this.currentWaveform);
     this.storageManager.saveSpectrum(this.currentSpectrum);

@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
@@ -13,26 +14,26 @@
   padding: map.get($spacing, lg);
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
-  
+
   @include respond-to(tablet) {
     border-top: none;
     border-left: 1px solid var(--border-subtle);
     max-height: calc(100vh - 5rem);
     overflow-y: auto;
-    
+
     // Custom scrollbar styling
     &::-webkit-scrollbar {
       width: 8px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: var(--bg-primary);
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: var(--border-medium);
       border-radius: 0;
-      
+
       &:hover {
         background: var(--border-strong);
       }
@@ -62,11 +63,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: map.get($spacing, sm);
-  
+
   @include respond-to(mobile-l) {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   @include respond-to(tablet) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -75,7 +76,7 @@
 .audio-controls {
   display: flex;
   gap: map.get($spacing, sm);
-  
+
   .action-button {
     flex: 1;
   }
@@ -96,7 +97,7 @@
   position: relative;
   overflow: hidden;
   @include transition(background-color, border-color, transform, box-shadow);
-  
+
   // Subtle gradient overlay
   &::before {
     content: '';
@@ -109,25 +110,25 @@
     opacity: 0;
     @include transition(opacity);
   }
-  
+
   &:hover:not(:disabled) {
     background-color: var(--bg-secondary);
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 1px var(--accent-primary);
-    
+
     &::before {
       opacity: 1;
     }
   }
-  
+
   &:active:not(:disabled) {
     transform: translateY(1px);
   }
-  
+
   &:focus {
     @include focus-outline;
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -149,23 +150,23 @@
   position: relative;
   overflow: hidden;
   @include transition(background-color, border-color, transform, box-shadow, color);
-  
+
   &:hover:not(:disabled) {
     background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
     color: var(--bg-primary);
     border-color: transparent;
     box-shadow: map.get($shadows, medium);
   }
-  
+
   &:active:not(:disabled) {
     transform: translateY(1px);
     box-shadow: map.get($shadows, subtle);
   }
-  
+
   &:focus {
     @include focus-outline;
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -210,7 +211,7 @@
   background: var(--bg-tertiary);
   border: 1px solid var(--border-medium);
   outline: none;
-  
+
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -220,13 +221,13 @@
     cursor: pointer;
     border: 2px solid var(--bg-secondary);
     @include transition(background-color, transform);
-    
+
     &:hover {
       background: var(--accent-secondary);
       transform: scale(1.1);
     }
   }
-  
+
   &::-moz-range-thumb {
     width: 16px;
     height: 16px;
@@ -235,18 +236,18 @@
     border: 2px solid var(--bg-secondary);
     border-radius: 0;
     @include transition(background-color, transform);
-    
+
     &:hover {
       background: var(--accent-secondary);
       transform: scale(1.1);
     }
   }
-  
+
   &:focus {
     &::-webkit-slider-thumb {
       box-shadow: 0 0 0 3px var(--accent-primary);
     }
-    
+
     &::-moz-range-thumb {
       box-shadow: 0 0 0 3px var(--accent-primary);
     }
@@ -260,4 +261,42 @@
   font-weight: 500;
   color: var(--accent-primary);
   text-align: right;
+}
+
+
+.history-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-medium);
+    cursor: pointer;
+    color: var(--text-primary);
+    @include transition(background-color, border-color, opacity);
+
+    svg {
+        pointer-events: none;
+    }
+
+    &:hover:not(:disabled) {
+        background-color: var(--bg-secondary);
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 1px var(--accent-primary);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(1px);
+    }
+
+    &:focus {
+        @include focus-outline;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
 }
